@@ -58,4 +58,30 @@ router.post("/", (req, res) => {
       });
     });
 });
+
+// Update Car
+router.put("/:id", (req, res) => {
+  db("cars")
+    .where({ id: req.params.id })
+    .update(req.body)
+    .then(ids => {
+      db("cars")
+        .select("*")
+        .where({ id: req.params.id })
+        .first()
+        .then(car => {
+          res.status(200).json(car);
+        })
+        .catch(error => {
+          res.status(500).json({
+            errorMessage: "Error get car data"
+          });
+        });
+    })
+    .catch(error => {
+      res.status(500).json({
+        errorMessage: "Error update car"
+      });
+    });
+});
 module.exports = router;

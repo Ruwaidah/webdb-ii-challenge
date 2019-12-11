@@ -3,6 +3,11 @@ const server = express();
 server.use(express.json());
 
 const carsRouter = require("./cars/carsRouter");
-const router = express.Router();
+
+server.use("/cars", carsRouter);
+
+server.get("/", (req, res) => {
+  res.send("<h1>Wellcome</h1>");
+});
 
 module.exports = server;

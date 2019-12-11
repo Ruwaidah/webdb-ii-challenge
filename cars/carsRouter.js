@@ -33,4 +33,29 @@ router.get("/:id", (req, res) => {
       });
     });
 });
+
+// Add new Car
+router.post("/", (req, res) => {
+  db("cars")
+    .insert(req.body)
+    .then(ids => {
+      db("cars")
+        .select("*")
+        .where({ id: ids[0] })
+        .first()
+        .then(newcar => {
+          res.status(200).json(newcar);
+        })
+        .catch(error => {
+          res.status(500).json({
+            errorMessage: "Error getting car data"
+          });
+        });
+    })
+    .catch(error => {
+      res.status(500).json({
+        errorMessage: "Error adding new car"
+      });
+    });
+});
 module.exports = router;
